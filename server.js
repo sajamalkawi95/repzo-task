@@ -9,6 +9,8 @@ const app = express()
 const cors = require('cors');
 require('dotenv').config();
 const mongoose = require("mongoose");
+
+
 /**
  * =======================
  * Env Variables
@@ -32,7 +34,7 @@ app.use(cors());
  * Require Controllers
  * =======================
  */
-const { getAllVisitors, getVisitors } = require('./Controller/visit.controller')
+const { getAllVisitors, cache, getVisitors } = require('./Controller/visit.controller')
 const { getAllUsers } = require('./Controller/user.controller')
 const { getAllClients } = require('./Controller/client.controller')
 
@@ -60,7 +62,7 @@ mongoose.connect(`${MONGO_DB_URL}`, {
 
 app.get("/", (req, res) => res.send("<h1> Welcome to our server 😊<h1>")); // Proof Of Life Route
 app.get("/getAllVisitors", getAllVisitors);
-app.get("/less-visited-clients-per-day", getVisitors);
+app.get("/less-visited-clients-per-day", cache, getVisitors);
 app.get("/getAllClients", getAllClients);
 app.get("/getAllUsers", getAllUsers);
 
